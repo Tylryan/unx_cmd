@@ -1,0 +1,1 @@
+/home/tyler-arco/documents/coding/projects/rust/unix_commands/target/debug/unix_commands: /home/tyler-arco/documents/coding/projects/rust/unix_commands/src/main.rs /home/tyler-arco/documents/coding/projects/rust/unix_commands/src/unx_cmd.rs
