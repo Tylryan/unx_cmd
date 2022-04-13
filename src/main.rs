@@ -18,8 +18,14 @@ Anyway, Later
     let append_text      = append_text_to_line(&cleaned_contents);
     let prepend_text     = prepend_text_to_line(&cleaned_contents);
 
+
+    println!("================= Original =========================");
+    println!("{file_contents}");
+    println!("================= Remove Comments ==================");
     println!("{cleaned_contents}");
+    println!("================= Append Text ======================");
     println!("\n{append_text}");
+    println!("================= Prepend Text =====================");
     println!("\n{prepend_text}");
 
 }

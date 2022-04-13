@@ -1,9 +1,14 @@
+
+#![allow(dead_code)]
+
 use std::fs::DirBuilder;
 // use std::io::prelude::*;  // Read to string
 use std::path::Path;
 use regex::Regex;
 extern crate glob;
 use self::glob::glob;
+use std::fs::File;
+
 
 pub fn pwd() -> String
 { 
@@ -13,31 +18,40 @@ pub fn pwd() -> String
                         .to_string()
 }
 
-pub fn touch(path: &Path)
+pub fn touch(path: &Path) -> Result<File, std::io::Error>
 {
-    std::fs::File::create(path).expect("Could not create file");
+    std::fs::File::create(path)
 }
 
-pub fn cd(new_dir: &str)
+pub fn cd(new_dir: &str) -> Result<(), std::io::Error>
 {
     std::env::current_dir()
         .unwrap()
         .display()
         .to_string();
-    std::env::set_current_dir(new_dir).unwrap();
+    return std::env::set_current_dir(new_dir);
 }
 
-pub fn rm(file: &Path) { std::fs::remove_file(file).unwrap(); }
+pub fn rm(file: &Path) -> Result<(), std::io::Error>
+{ 
+    return std::fs::remove_file(file);
+}
 
-pub fn cp(from: &Path, to: &Path) { std::fs::copy(from, to).unwrap(); }
+pub fn cp(from: &Path, to: &Path) -> Result<u64, std::io::Error>
+{ 
+    return std::fs::copy(from, to)
+}
 
-pub fn rename(from: &Path, to: &Path) { std::fs::rename(from, to).unwrap(); }
+pub fn rename(from: &Path, to: &Path) -> Result<(), std::io::Error>
+{ 
+    return std::fs::rename(from, to);
+}
 
-pub fn mkdir(dir_name: &Path)
+pub fn mkdir(dir_name: &Path) -> Result<(), std::io::Error>
 {
     let mut dir  = DirBuilder::new();
     dir.recursive(true); // Idk how to use this but it exists
-    dir.create(dir_name).unwrap();
+    return dir.create(dir_name);
 }
 
 pub fn ls(path: &Path) -> Vec<String>
@@ -85,7 +99,20 @@ pub fn sed_g(text: &str, old:&str, new:&str) -> String
     }
 
     return replaced_text;
+}
 
+fn cut(text: String, delim: &str, field: usize) -> Option<Vec<String>>
+{
+    let output = text
+        .lines()
+        .map(|x| x
+             .split(delim)
+             .collect::<Vec<&str>>()
+             .get(field)
+             .unwrap()
+             .to_string())
+        .collect::<Vec<String>>();
+    return Some(output);
 }
 
 // Not a unix command, but super helpful
@@ -96,3 +123,4 @@ pub fn has_match(text: &str, regex: &str) -> bool
 
     return found_match;
 }
+
